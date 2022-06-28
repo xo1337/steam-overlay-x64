@@ -72,3 +72,63 @@ char __fastcall Steam::DXGI::InitializeHooking(_QWORD **SwapChain, __int64 a2)
   }
   return result;
 }
+
+// Unfinished
+__int64 __fastcall Steam::DXGI::PresentHook(__int64 a1, __int64 a2, __int64 a3)
+{
+  unsigned int v3; // ebp
+  unsigned int v4; // esi
+  __int64 v7; // rdi
+  __int64 v8; // rbx
+  unsigned int v9; // esi
+  __int64 v10; // rdx
+  __int64 v11; // rdx
+  __int64 v12; // rcx
+
+  v3 = a3;
+  v4 = a2;
+  if ( (a3 & 1) != 0 )
+    return Steam::DXGI::OriginalPresent(a1, a2, a3);
+  v7 = sub_6ADD0(&qword_192DF0, a1);
+  v8 = sub_70260(&qword_192E50, a1);
+  if ( v7 )
+    sub_ACF80(v7);
+  if ( v8 )
+    sub_ACF80(v8);
+  if ( (unsigned __int8)sub_8A140() )
+  {
+    if ( v7 )
+      *(_BYTE *)(v7 + 93) = v4 != 0;
+    if ( v8 )
+      *(_BYTE *)(v8 + 93) = v4 != 0;
+    v4 = 0;
+    v3 &= ~8u;
+  }
+  v9 = Steam::DXGI::OriginalPresent(a1, v4, v3);
+  if ( v7 )
+  {
+    v10 = *(_QWORD *)(v7 + 328);
+    if ( v10 )
+    {
+      if ( *(_BYTE *)(v7 + 91) )
+        (*(void (__fastcall **)(_QWORD, __int64, void *))(**(_QWORD **)(v7 + 224) + 280i64))(
+          *(_QWORD *)(v7 + 224),
+          v10,
+          &unk_18D7A0);
+    }
+  }
+  if ( v8 )
+  {
+    v11 = *(_QWORD *)(v8 + 296);
+    if ( v11 )
+    {
+      v12 = *(_QWORD *)(v8 + 256);
+      if ( v12 )
+      {
+        if ( *(_BYTE *)(v8 + 91) )
+          (*(void (__fastcall **)(__int64, __int64, void *))(*(_QWORD *)v12 + 400i64))(v12, v11, &unk_18D7B0);
+      }
+    }
+  }
+  return v9;
+}

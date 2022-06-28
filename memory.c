@@ -1,3 +1,58 @@
+// Signature: 40 53 48 83 EC ? 33 C9 E8
+__int64 sub_D9124()
+{
+  __int64 v0; // rbx
+
+  Steam::Memory::EnterCriticalSection(0);
+  v0 = __ROR8__(qword_1C0388 ^ _security_cookie, _security_cookie & 0x3F);
+  Steam::Memory::LeaveCriticalSection(0);
+  return v0;
+}
+
+// Signature: 40 53 48 83 EC ? 48 8B D9 E8 ? ? ? ? 48 85 C0
+_BOOL8 __fastcall Steam::Memory::ValidHeapIndexUnk(__int64 a1)
+{
+  unsigned int (__fastcall *v2)(__int64); // rax
+
+  v2 = (unsigned int (__fastcall *)(__int64))sub_D9124();
+  return v2 && v2(a1);
+}
+
+// Signature: E9 ? ? ? ? CC CC CC CC CC CC CC CC CC CC CC CC CC CC CC CC CC CC CC CC
+LPVOID __fastcall Steam::Memory::AllocateHeapMemory_wrapper(unsigned __int64 buffer)
+{
+  return Steam::Memory::AllocateHeapMemory(buffer);
+}
+
+// Signature: 40 53 48 83 EC ? 48 8B D9 48 83 F9 ? 77
+LPVOID __fastcall Steam::Memory::AllocateHeapMemory(unsigned __int64 buffer)
+{
+  unsigned __int64 v1; // rbx
+  LPVOID result; // rax
+
+  v1 = buffer;
+  if ( buffer > 0xFFFFFFFFFFFFFFE0ui64 )
+  {
+LABEL_9:
+    *(_DWORD *)sub_D3A0C() = 12;
+    return 0i64;
+  }
+  else
+  {
+    if ( !buffer )
+      v1 = 1i64;
+    while ( 1 )
+    {
+      result = HeapAlloc(hHeap, 0, v1);
+      if ( result )
+        break;
+      if ( !(unsigned int)sub_E7614() || !(unsigned int)Steam::Memory::ValidHeapIndexUnk(v1) )
+        goto LABEL_9;
+    }
+  }
+  return result;
+}
+
 bool __fastcall Steam::Memory::IsFunctionHooked(_BYTE *lpAddress, _BYTE *currentFunctionBytes)
 {
   _BYTE *OriginalBytes; // rbx

@@ -1,3 +1,4 @@
+// Signature: 48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC ? 48 8B 01 48 8B F2
 char __fastcall Steam::DXGI::InitializeHooking(_QWORD **SwapChain, __int64 a2)
 {
   void **DXGIVTable; // rdi
